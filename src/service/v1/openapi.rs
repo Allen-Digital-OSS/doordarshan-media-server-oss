@@ -1,0 +1,49 @@
+use utoipa::OpenApi;
+
+#[derive(OpenApi)]
+#[openapi(
+    paths(
+        crate::service::v1::create_meeting,
+        crate::service::v1::replace_meetings,
+        crate::service::v1::get_producers_of_meeting,
+        crate::service::v1::connect_transport,
+        crate::service::v1::restart_ice,
+        crate::service::v1::recreate_producer_transport,
+        crate::service::v1::recreate_consumer_transport,
+        crate::service::v1::create_consumer,
+        crate::service::v1::create_producer,
+        crate::service::v1::resume_consumer,
+        crate::service::v1::resume_producer,
+        crate::service::v1::pause_producer,
+        crate::service::v1::pause_consumer,
+        crate::service::v1::close_producer,
+        crate::service::v1::close_consumer,
+        crate::service::v1::leave_meeting,
+        crate::service::v1::end_meeting,
+        crate::service::v1::pre_meeting_details,
+    ),
+    components(
+        schemas(
+            crate::service::payload::CreateMeetingPayload,
+            crate::service::payload::RouterDetails,
+            crate::service::payload::ReplaceMeetingsRequest,
+            crate::service::payload::ReplaceMeetingPayload,
+            crate::service::payload::GetParticipantsOfMeetingPayload,
+            crate::service::payload::ConnectTransportRequest,
+            crate::service::payload::RestartIceRequest,
+            crate::service::payload::CreateTransportRequest,
+            crate::service::payload::CreateProduceRequest,
+            crate::service::payload::CreateConsumeRequest,
+            crate::service::payload::ResumeConsumeRequest,
+            crate::service::payload::ResumeProducerRequest,
+            crate::service::payload::PauseProducerRequest,
+            crate::service::payload::PauseConsumerRequest,
+            crate::service::payload::CloseProducerRequest,
+            crate::service::payload::CloseConsumerRequest,
+            crate::service::payload::LeaveMeetingRequest,
+            crate::service::payload::EndMeetingRequest,
+            crate::service::payload::PreMeetingDetailsRequest,
+        )
+    )
+)]
+pub struct ApiDoc;
