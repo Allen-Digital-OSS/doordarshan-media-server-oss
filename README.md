@@ -1,56 +1,115 @@
-### doordarshan-media-server
+# Doordarshan Media Server (OSS)
 
-# Steps to run in local
-1. Setup Mysql Server
-2. Create user root without password
-3. Create database doordarshan
-4. Run create_tables.sql
-5. Install Rust
-6. Install gstreamer and set env variables as well  `https://gstreamer.freedesktop.org/documentation/installing/index.html`
-Sample : `export PKG_CONFIG_PATH=/opt/homebrew/lib/pkgconfig:/opt/homebrew/opt/glib/lib/pkgconfig:/opt/homebrew/opt/gstreamer/lib/pkgconfig:/opt/homebrew/opt/libffi/lib/pkgconfig:/opt/homebrew/opt/gobject-introspection/lib/pkgconfig`
-7. create local.env file inside config directory, refer the `Local Environment Variables` section
-8. Run cargo run
-```[2025-12-15 16:35:21] [None] [INFO] Using local environment, logging to console
-[2025-12-15 16:35:21] [None] [INFO]
-    ____                           __                    __
-   / __ \ ____   ____   _____ ____/ /____ _ _____ _____ / /_   ____ _ ____
-  / / / // __ \ / __ \ / ___// __  // __ `// ___// ___// __ \ / __ `// __ \
- / /_/ // /_/ // /_/ // /   / /_/ // /_/ // /   (__  )/ / / // /_/ // / / /
-/_____/ \____/ \____//_/    \__,_/ \__,_//_/   /____//_/ /_/ \__,_//_/ /_/
-    __  ___           __ _           _____
-   /  |/  /___   ____/ /(_)____ _   / ___/ ___   _____ _   __ ___   _____
-  / /|_/ // _ \ / __  // // __ `/   \__ \ / _ \ / ___/| | / // _ \ / ___/
- / /  / //  __// /_/ // // /_/ /   ___/ //  __// /    | |/ //  __// /
-/_/  /_/ \___/ \__,_//_/ \__,_/   /____/ \___//_/     |___/ \___//_/
+**doordarshan-media-server-oss** is an open-source WebRTC SFU and media processing server built on mediasoup, providing real-time audio/video streaming with integrated server-side recording via GStreamer pipelines. It is designed for scalable, production-grade live streaming systems.
 
-[2025-12-15 16:35:21] [None] [INFO] Starting Doordarshan MediaServer
-[2025-12-15 16:35:21] [None] [INFO] Environment: "local"
-[2025-12-15 16:35:21] [None] [INFO] Elastic IP: 127.0.0.1
-[2025-12-15 16:35:21] [None] [INFO] Private IP: 127.0.0.1
-[2025-12-15 16:35:21] [None] [INFO] MYSQL_CREDS_PATH not provided, defaulting to
-[2025-12-15 16:35:21] [None] [INFO] Connecting to Local MySQL
-[2025-12-15 16:35:21] [None] [INFO] OTEL_ENDPOINT not provided, defaulting to localhost:4318
-[2025-12-15 16:35:21] [None] [INFO] RTC_DEFAULT_MAX_PARTICIPANTS_PER_WORKER not provided, defaulting to 240
-[2025-12-15 16:35:21] [None] [INFO] RTC_DEFAULT_MAX_PRODUCERS_OR_CONSUMERS_PER_WORKER not provided, defaulting to 480
-[2025-12-15 16:35:21] [None] [INFO] PLAIN_TRANSPORT_VIDEO_PORT_RANGE_START not provided, defaulting to 50000
-[2025-12-15 16:35:21] [None] [INFO] PLAIN_TRANSPORT_VIDEO_PORT_RANGE_END not provided, defaulting to 55000
-[2025-12-15 16:35:21] [None] [INFO] PLAIN_TRANSPORT_AUDIO_PORT_RANGE_START not provided, defaulting to 60000
-[2025-12-15 16:35:21] [None] [INFO] PLAIN_TRANSPORT_AUDIO_PORT_RANGE_END not provided, defaulting to 65000
-[2025-12-15 16:35:21] [None] [INFO] RTC_MAX_INCOMING_BITRATE not provided, defaulting to 10000000
-[2025-12-15 16:35:21] [None] [INFO] RTC_MIN_OUTGOING_BITRATE not provided, defaulting to 100000
-[2025-12-15 16:35:21] [None] [INFO] RTC_MAX_OUTGOING_BITRATE not provided, defaulting to 10000000
-[2025-12-15 16:35:21] [None] [INFO] USER_EVENT_CHANNEL_COUNT_NAME not provided, defaulting to 100
-[2025-12-15 16:35:21] [None] [INFO] Initialising Mediasoup SFU
-[2025-12-15 16:35:21] [None] [INFO] Instance configuration and computed settings | Instance Cores: 11
-[2025-12-15 16:35:21] [None] [INFO] Creating worker # 1
-[2025-12-15 16:35:21] [None] [INFO] Creating worker # 2
-[2025-12-15 16:35:21] [None] [INFO] Insert string is INSERT INTO container_heartbeat (container_id, heartbeat, host, tenant) VALUES ('127.0.0.1-1765796721546031000',1765796721546031000,'127.0.0.1','MvN')
-[2025-12-15 16:35:21] [None] [INFO] Insert string is INSERT INTO worker_container (container_id, worker_id) VALUES ('127.0.0.1-1765796721546031000','973b5077-2dae-441f-a43e-d0b98c24e5c6')
-[2025-12-15 16:35:21] [None] [INFO] Insert string is INSERT INTO worker_container (container_id, worker_id) VALUES ('127.0.0.1-1765796721546031000','8fea8756-a5f0-477a-9d49-9627b2525078')
-[2025-12-15 16:35:21] [None] [INFO] Success in writing to DB
-[2025-12-15 16:35:21] [None] [INFO] Media Server started!
-[2025-12-15 16:35:21] [None] [INFO] Listening on 0.0.0.0:3001
+This project focuses on reliability in real-world conditions such as long-running sessions, audio/video stalls, synchronization issues, and continuous recording.
+
+---
+
+## ✨ Features
+
+- WebRTC SFU powered by mediasoup
+- Real-time audio/video routing
+- Server-side recording using GStreamer
+- Supports long-running live streams
+- Handles A/V stalls with silence / black-frame injection
+- Designed for horizontal scaling
+- Production-oriented failure handling
+
+---
+## Each media server instance:
+
+- Accepts WebRTC producers/consumers
+- Routes RTP streams internally via mediasoup
+- Feeds audio/video into GStreamer pipelines
+- Generates continuous recordings
+- Handles missing audio/video by injecting silence or black frames
+
+The server is designed to work alongside doordarshan-kendra, which acts as the orchestration and control plane.
+
+---
+## 🚀 Use Cases
+
+- Meetings and real-time collaboration
+- Large-scale broadcasts
+- Interactive streaming platforms
+- Real-time conferencing with server-side recording
+- Media ingestion pipelines
+---
+## 📦 Tech Stack
+
+- WebRTC
+- mediasoup
+- GStreamer
+- Rust
+- MySQL
+
+---
+
+### Clone the repository
+
+```bash
+git clone git@github.com:Allen-Digital-OSS/doordarshan-media-server-oss.git
+cd doordarshan-media-server-oss
 ```
+### 🔧 Local Development
+Setup and run instructions are available here:
 
-#Swagger UI
-http://localhost:3001/docs/#/
+👉 [Local Development Guide](docs/local-setup.md)
+
+### Remote Deployment
+Deployment instructions are available here:
+
+👉 <WIP> [Remote Deployment Guide](docs/remote-deployment.md)
+
+## 📖 API Documentation (Swagger UI)
+API documentation is available at: http://localhost:3001/docs/#/
+
+---
+## 📚 GStreamer Recording Pipeline Series
+This media server’s recording architecture is based on our in-depth GStreamer pipeline exploration series:
+
+### Implemented in this repository
+
+- **Part 0 – Architecture & Overview**
+  👉 https://medium.com/@allen-blogs/part-0-in-house-webrtc-conferencing-platform-ec5502be9114
+
+- **Part 1 – One Pipeline Per Producer**
+  👉 https://medium.com/@allen-blogs/part-1-one-pipeline-per-producer-6174b380f984
+
+- **Part 2 – Combining Audio and Video in a Single Pipeline**
+  👉 https://medium.com/@allen-blogs/part-2-combining-audio-and-video-in-a-single-pipeline-3fc2bc6a70cc
+
+- **Part 3 – Multi-Audio / Multi-Video Pipeline**
+  👉 https://medium.com/@allen-blogs/part-3-pipeline-for-multi-audio-multi-video-9b969c977323
+
+### Experimental / POC
+
+- **Part 4 – Pipeline with Test Sources**
+  (Proof-of-concept implemented but not merged to `main`)
+  👉 https://medium.com/@allen-blogs/part-4-pipeline-with-video-audio-test-src-8617345a2629
+
+### Bonus – Experiments & Lessons
+
+- 👉 https://medium.com/@allen-blogs/bonus-gstreamer-pipeline-experiments-and-lessons-ae2fbe096493
+---
+## 🤝 Contributing
+We follow a fork-based contribution model.
+
+Workflow:
+1.	Fork the repository
+2.	Create a feature branch in your fork
+3.	Make your changes
+4.	Run pre-commit hooks
+5.	Open a Pull Request against main
+
+Direct pushes to the main repository are disabled.
+
+## 📄 License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Acknowledgements
+Built with:
+- mediasoup
+- GStreamer
+- AI tools
