@@ -1,0 +1,9 @@
+/target
+/.idea/target
+aws.xml
+*.iml
+/.idea
+/doordarshan-media-server.log
+
+
+/config/
