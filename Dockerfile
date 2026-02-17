@@ -60,7 +60,7 @@ ENV RUSTFLAGS="--cfg tokio_unstable"
 
 # Copy needed directories
 COPY ./src /doordarshan-media-server/src
-COPY ./config /doordarshan-media-server/config
+#COPY ./config /doordarshan-media-server/config
 COPY ./Cargo.lock /doordarshan-media-server/Cargo.lock
 COPY ./Cargo.toml /doordarshan-media-server/Cargo.toml
 
