@@ -78,7 +78,7 @@ RUN chmod 777 /var/log/doordarshan-media-server.log
 WORKDIR /app
 
 COPY --from=builder /doordarshan-media-server/target/release/doordarshan-media-server .
-COPY --from=builder /doordarshan-media-server/config ./config
+#COPY --from=builder /doordarshan-media-server/config ./config
 COPY ./run.sh ./run.sh
 
 RUN chmod +x run.sh
