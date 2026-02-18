@@ -67,18 +67,15 @@ COPY ./Cargo.toml /doordarshan-media-server/Cargo.toml
 # Build the binary
 RUN cargo build --release
 
-FROM rust:1.87.0-slim-bookworm AS runtime
-
 RUN mkdir -p /app
 RUN mkdir -p /app/config
 RUN mkdir -p /var/log
 RUN touch /var/log/doordarshan-media-server.log
 RUN chmod 777 /var/log/doordarshan-media-server.log
 
+RUN cp target/release/doordarshan-media-server /app/
 WORKDIR /app
-
-COPY --from=builder /doordarshan-media-server/target/release/doordarshan-media-server .
-#COPY --from=builder /doordarshan-media-server/config ./config
+#COPY ./config/* /app/config/
 COPY ./run.sh ./run.sh
 
 RUN chmod +x run.sh
