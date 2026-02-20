@@ -1833,8 +1833,8 @@ impl SFU {
                 }
                 Err(e) => {
                     folder_exists = false;
-                    error!("Failed to create folder: {}", e);
-                    Err(format!("Failed to create folder: {}", e))
+                    error!("Failed to create folder path : {} : {} ", path, e);
+                    Err(format!("Failed to create folder: {} : {} ", path, e))
                 }
             }
         } else {

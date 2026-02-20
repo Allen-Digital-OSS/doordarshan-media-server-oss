@@ -15,6 +15,7 @@ This project focuses on reliability in real-world conditions such as long-runnin
 - Handles A/V stalls with silence / black-frame injection
 - Designed for horizontal scaling
 - Production-oriented failure handling
+- Multi-tenancy support for isolated workloads [MultiTenancy](docs/tenant.md)
 
 ---
 ## Each media server instance:
@@ -25,7 +26,7 @@ This project focuses on reliability in real-world conditions such as long-runnin
 - Generates continuous recordings
 - Handles missing audio/video by injecting silence or black frames
 
-The server is designed to work alongside doordarshan-kendra, which acts as the orchestration and control plane.
+The server is designed to work alongside [doordarshan-kendra](https://github.com/Allen-Digital-OSS/doordarshan-kendra-oss), which acts as the orchestration and control plane.
 
 ---
 ## 🚀 Use Cases
@@ -110,6 +111,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Acknowledgements
 Built with:
-- mediasoup
-- GStreamer
+- [mediasoup](https://mediasoup.org/)
+- [GStreamer](https://gstreamer.freedesktop.org/)
 - AI tools

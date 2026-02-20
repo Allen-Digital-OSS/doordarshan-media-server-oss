@@ -1,5 +1,3 @@
-### doordarshan-media-server
-
 # Steps to run in local
 1. Setup Mysql Server
 2. Create user root without password
@@ -9,8 +7,9 @@
 6. Install gstreamer and set env variables as well  `https://gstreamer.freedesktop.org/documentation/installing/index.html`
    Sample : `export PKG_CONFIG_PATH=/opt/homebrew/lib/pkgconfig:/opt/homebrew/opt/glib/lib/pkgconfig:/opt/homebrew/opt/gstreamer/lib/pkgconfig:/opt/homebrew/opt/libffi/lib/pkgconfig:/opt/homebrew/opt/gobject-introspection/lib/pkgconfig`
 7. create local.env file inside config directory, refer the `Local Environment Variables` section
-8. Run cargo build
-9. Run cargo run
+8. Create a folder /opt/recordings/ and give read/write permissions to the user running the media server process. This is required for the recording pipeline to work.
+9. Run cargo build
+10. Run cargo run
 ```[2025-12-15 16:35:21] [None] [INFO] Using local environment, logging to console
 [2025-12-15 16:35:21] [None] [INFO]
     ____                           __                    __
@@ -53,5 +52,30 @@
 [2025-12-15 16:35:21] [None] [INFO] Listening on 0.0.0.0:3001
 ```
 
-#Swagger UI
+# Swagger UI
 http://localhost:3001/docs/#/
+
+# Local Environment Variables
+```
+RUST_BACKTRACE="full"
+
+SERVER_PORT=3001
+
+LOG_LEVEL="info"
+LOG_PATH="doordarshan-media-server.log"
+
+RTC_PORT_RANGE_START=40000
+RTC_PORT_RANGE_END=45000
+RTC_LISTEN_IP="127.0.0.1"
+RTC_ANNOUNCED_IP="127.0.0.1"
+CONSUMER_SHARD_COUNT_NAME=6
+
+MYSQL_HOST="127.0.0.1:3306"
+MYSQL_USER="root"
+MYSQL_PASSWORD=""
+MYSQL_DATABASE="doordarshan"
+TENANT=MvN
+
+CLIENT_CONFIG_SERVICE_ENDPOINT="https://api.example.com/v1/events/dummy-session-events/publish"
+CLIENT_CONFIG_SERVICE_HEADERS={"user-agent":"doordarshan-dev/1.0 (contact: dev@example.com)"}
+```

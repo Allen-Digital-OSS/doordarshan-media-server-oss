@@ -1,3 +1,6 @@
+create DATABASE doordarshan;
+USE doordarshan;
+
 create table container_heartbeat (
     container_id varchar(64),
     host varchar(64),
@@ -41,7 +44,6 @@ create table router_meeting (
     capacity int,
     container_id varchar(64)
 );
---alter table router_meeting add constraint meeting_id_unique UNIQUE(meeting_id);
 
 create index router_id_index_router_meeting ON router_meeting (router_id);
 create index meeting_id_index_router_meeting ON router_meeting (meeting_id);
@@ -72,11 +74,14 @@ create table participant_producer_transport (
     PRIMARY KEY (participant_id)
 );
 
+ALTER TABLE participant_producer_transport add constraint transport_id_unique UNIQUE(transport_id);
+
 create table participant_consumer_transport (
     participant_id varchar(64),
     transport_id varchar(64),
     PRIMARY KEY (participant_id)
 );
+ALTER TABLE participant_consumer_transport add constraint transport_id_unique UNIQUE(transport_id);
 
 create table participant_producers (
     participant_id varchar(64),
@@ -105,7 +110,7 @@ ALTER TABLE router_meeting
 ADD FOREIGN KEY (router_id) REFERENCES router_worker (router_id) ON DELETE CASCADE;
 
 ALTER TABLE participant_meeting
-ADD FOREIGN KEY (meeting_id) REFERENCES router_meeting (meeting_id) ON DELETE CASCADE;
+ADD FOREIGN KEY (meeting_id) REFERENCES meeting_status (meeting_id) ON DELETE CASCADE;
 
 ALTER TABLE participant_producer_router
 ADD FOREIGN KEY (participant_id) REFERENCES participant_meeting (participant_id) ON DELETE CASCADE;
@@ -138,7 +143,7 @@ ALTER TABLE participant_consumers
     ADD FOREIGN KEY (transport_id) REFERENCES participant_consumer_transport (transport_id) ON DELETE CASCADE;
 
 ALTER TABLE participant_consumers
-ADD CONSTRAINT participant_consumers_ibfk_2 FOREIGN KEY (target_participant_id) REFERENCES participant_meeting (participant_id) ON DELETE CASCADE;
+ADD CONSTRAINT participant_consumers_tp_pm_p FOREIGN KEY (target_participant_id) REFERENCES participant_meeting (participant_id) ON DELETE CASCADE;
 
 ALTER TABLE router_meeting
 ADD CONSTRAINT fk_router_meeting_meeting_id FOREIGN KEY (meeting_id) REFERENCES meeting_status(meeting_id) ON DELETE CASCADE;
