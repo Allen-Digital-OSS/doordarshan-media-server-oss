@@ -1,6 +1,6 @@
 # Doordarshan Media Server (OSS)
 
-**doordarshan-media-server-oss** is an open-source WebRTC SFU and media processing server built on mediasoup, providing real-time audio/video streaming with integrated server-side recording via GStreamer pipelines. It is designed for scalable, production-grade live streaming systems.
+**doordarshan-media-server-oss** is an open-source WebRTC SFU and media processing server built on [mediasoup](https://mediasoup.org/), providing real-time audio/video streaming with integrated server-side recording via GStreamer pipelines. It is designed for scalable, production-grade live streaming systems.
 
 This project focuses on reliability in real-world conditions such as long-running sessions, audio/video stalls, synchronization issues, and continuous recording.
 
